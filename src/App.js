@@ -6,16 +6,19 @@ import Persons from './components/Persons'
 
 const App = () => {
   const [persons, setPersons] = useState([
-    { name: 'Christofor '}
+    { name: 'Christofor'}
   ])
 
   const [newName, setNewName] = useState('')
   const [newNumber,setNewNumber] = useState('')
 
-
   const inputTextName = "Add new persons name..."
-  const inputNumberValue = "Add new Number value..."
+  
 
+  
+
+
+  
 
 
 
@@ -28,32 +31,51 @@ const App = () => {
       important: Math.random() > 0.5,
       id: persons.length + 1,
     }
+    // whereas user try to add name, which is already in the table/list. Action alert that name is already added in the list. Use different name
+    // whereas user adds name, which is not in the list then it uses  else => setpersons = {newname}
+
+    // variable "persons" has two different values in the table, therefore adding  a new to continue previous value using  function name concat() 
+    //
+
+    if(persons.some(personsFind=> personsFind.name === newName)) {
+      alert(`${newName}person has been already added on the phonebook. Please use different name!`)
+    } else {
     setPersons(persons.concat(nameObject))
     setNewName('')
-  }
-
-  const submitNumber = (event) => {
-    event.preventDefault()
-    const NumberObject = {
-      phonenumber:newNumber,
-    }
-
-    setNewNumber(Number.concat())
     setNewNumber('')
-  }
-
-
-  const handleNameChange = (event) => {
-
-    console.log(event.target.value)
-    setNewName(event.target.value)
 
   }
 
-  const handleNumberChange = (event) => {
-    console.log(event.target.value)
-    setNewNumber(event.target.value)
-  }
+}
+
+  
+
+
+
+
+
+const handleNameChange = (event) => {
+
+  console.log(event.target.value)
+  setNewName(event.target.value)
+}
+
+
+const handleNumberChange = (event) => {
+  console.log(event.target.value)
+  setNewNumber(event.target.value)
+
+}
+
+
+
+
+  
+
+
+
+
+
   
 
 
@@ -76,19 +98,20 @@ const App = () => {
 
    return (
     <div>
-      <h2>Phonebook</h2>
-
-      <form onSubmit={submitPerson}><input value={newName}onChange={handleNameChange}placeholder={inputTextName}/><button type="submit">add</button>
-      </form>
-
-      <h2>Numbers</h2>
+      <h1>Phonebook</h1>
+      <form onSubmit={submitPerson}>
+        <div>
+        <input value={newName}onChange={handleNameChange}placeholder={inputTextName}/>
+        </div>
+        <div>
+          </div>
+           <button type='submit'>add</button>
+    </form>
+    <h1>Numbers</h1>
       <ul>
-          {persons.map(searchPersons =>
+      {persons.map(searchPersons =>
             <Persons key={searchPersons.name} personsProps={searchPersons} />
-          )}
-      <form onSubmit={submitNumber}><input value={newNumber}onChange={handleNumberChange}placeholder={inputNumberValue}/><button type='submit'>add</button>
-      </form>
-        
+      )}
         </ul>
     </div>
   )
