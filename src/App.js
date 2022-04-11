@@ -8,7 +8,6 @@ const App = () => {
   const [persons, setPersons] = useState([
     { name: 'Christofor'}
   ])
-
   const [newName, setNewName] = useState('')
   const [newNumber,setNewNumber] = useState('')
 
