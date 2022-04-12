@@ -6,12 +6,17 @@ import Persons from './components/Persons'
 
 const App = () => {
   const [persons, setPersons] = useState([
-    { name: 'Christofor'}
+    { name: 'Christofor',
+     number: '040-4659788'}
   ])
   const [newName, setNewName] = useState('')
   const [newNumber,setNewNumber] = useState('')
 
   const inputTextName = "Add new persons name..."
+  const inputPhoneNumber = "Add new persons phonenumber..."
+
+
+ 
   
 
   
@@ -59,6 +64,10 @@ const handleNameChange = (event) => {
   setNewName(event.target.value)
 }
 
+// in input (where user writing new number) value={newnumber}, its means practically that it  => setNewNumber  {newNumber} all what user writing. 
+// console.log(newNumber) tulostaa same things and before then user writing anything to input, so  => newNumber =''
+// when user writing value forexample "123444", then fuction => setNewNumber saves value, so number = "123444" 
+
 
 const handleNumberChange = (event) => {
   console.log(event.target.value)
@@ -103,6 +112,7 @@ const handleNumberChange = (event) => {
         <input value={newName}onChange={handleNameChange}placeholder={inputTextName}/>
         </div>
         <div>
+          <input value={newNumber}onChange={handleNumberChange}placeholder={inputPhoneNumber}/>
           </div>
            <button type='submit'>add</button>
     </form>
