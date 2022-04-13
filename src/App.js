@@ -9,11 +9,19 @@ const App = () => {
     { name: 'Christofor',
      number: '040-4659788'}
   ])
+  const [filterName , setFilterName] = useState('')
   const [newName, setNewName] = useState('')
   const [newNumber,setNewNumber] = useState('')
 
+
   const inputTextName = "Add new persons name..."
   const inputPhoneNumber = "Add new persons phonenumber..."
+  const inputSearchName = "Search new persons name"
+
+
+  
+
+
 
 
  
@@ -47,14 +55,20 @@ const App = () => {
     setPersons(persons.concat(nameObject))
     setNewName('')
     setNewNumber('')
+    setFilterName('')  // when user condutuc this function (submitPerson), so its return that partical function, whereas user don't use this input its would be stay to hang. 
+
 
   }
 
 }
 
-  
+  // in input (where use wring filterName) value={filterName}, its mean practically that it  => setFilterName {filterName}  saves all what user writing. 
+  // console.log(filterName) prints same things and before user writing anythin to input, so => filterName 
 
-
+const handleFilterNameChange  =(event) => {
+  console.log(event.target.value)
+  setFilterName(event.target.value)
+}
 
 
 
@@ -74,7 +88,6 @@ const handleNumberChange = (event) => {
   setNewNumber(event.target.value)
 
 }
-
 
 
 
@@ -105,26 +118,39 @@ const handleNumberChange = (event) => {
 
 
    return (
-    <div>
+     <div>
+      <div>
       <h1>Phonebook</h1>
-      <form onSubmit={submitPerson}>
-        <div>
-        <input value={newName}onChange={handleNameChange}placeholder={inputTextName}/>
+      <div>
+        filter shown with
+       <input value={filterName}onChange={handleFilterNameChange}placeholder={inputSearchName}/>
+       </div>
         </div>
+        <h1>Add new information</h1>
+        <form onSubmit={submitPerson}>
+          <div>
+        <input value={newName}onChange={handleNameChange}placeholder={inputTextName}/>
+          </div>
         <div>
           <input value={newNumber}onChange={handleNumberChange}placeholder={inputPhoneNumber}/>
           </div>
            <button type='submit'>add</button>
-    </form>
-    <h1>Numbers</h1>
-      <ul>
-      {persons.map(searchPersons =>
-            <Persons key={searchPersons.name} personsProps={searchPersons} />
-      )}
-        </ul>
-    </div>
-  )
+           </form>
+           <h1>Numbers</h1>
+           <div>
+             {persons.filter(filterPerson=> filterPerson.name.toLowerCase().includes(filterName.toLowerCase())).map(filteredPersons  =>
+               <Persons key={filteredPersons.name} personsProps={filteredPersons} />
+             )
 }
+           </div>
+           </div>
+   )
+}
+
+      
+
+          
+
 
 export default App
 

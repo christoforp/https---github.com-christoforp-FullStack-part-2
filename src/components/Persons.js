@@ -9,4 +9,5 @@ const Persons = ({personsProps}) => {
     )
 }
 
+
 export default Persons
