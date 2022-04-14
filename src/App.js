@@ -2,13 +2,54 @@
 
 
 import React, { useState } from 'react'
-import Persons from './components/Persons'
+import PersonsComponent from './components/Persons'
+
+
+const InputFilterComponent   = (props) => {
+  return(
+    <div>
+      <input value={props.Valueprops}
+      onChange={props.nameChangeProps}
+      placeholder={props.placeholderProps} />
+      </div>
+  
+  )
+}
+
+
+const InputFormComponent = (props) => {
+  return(
+    <form onSubmit={props.onSubmitProps}>
+      <div>
+        <input value={props.nameValue}
+        onChange={props.nameChange}
+        placeholder={props.namePlaceHolder} /> 
+      </div>
+      <div>
+        <input value={props.numberValue}
+        onChange={props.numberChange}
+        placeholder={props.numberPlaceHolder} />
+      </div>
+      <button type={props.typeprops}>Add</button>
+
+    </form>
+  
+
+  )
+}
+
 
 const App = () => {
   const [persons, setPersons] = useState([
     { name: 'Christofor',
      number: '040-4659788'}
   ])
+
+  
+
+  
+
+  
   const [filterName , setFilterName] = useState('')
   const [newName, setNewName] = useState('')
   const [newNumber,setNewNumber] = useState('')
@@ -43,8 +84,8 @@ const App = () => {
       important: Math.random() > 0.5,
       id: persons.length + 1,
     }
-    // whereas user try to add name, which is already in the table/list. Action alert that name is already added in the list. Use different name
-    // whereas user adds name, which is not in the list then it uses  else => setpersons = {newname}
+    // whereas user try to add name, which is already in the table/list. Action alert  (if => alert) that name is already added in the list. Use different name
+    // whereas user adds name, which is not in the list then it uses  (else => setpersons)= {newname}
 
     // variable "persons" has two different values in the table, therefore adding  a new to continue previous value using  function name concat() 
     //
@@ -53,9 +94,9 @@ const App = () => {
       alert(`${newName}person has been already added on the phonebook. Please use different name!`)
     } else {
     setPersons(persons.concat(nameObject))
-    setNewName('')
-    setNewNumber('')
-    setFilterName('')  // when user condutuc this function (submitPerson), so its return that partical function, whereas user don't use this input its would be stay to hang. 
+    setNewName('')     // when user conduct thsi function (submitPerson), So it cleart that partical function, whereas user don't use this input as result it would be stay like as "hang" in visible 
+    setNewNumber('')   // when user  conduct this function (submitPerson), So it clear that partical function, whereas user don't use this input it  would be stay like as "hang" visible 
+    setFilterName('')  // when user conduct  this function (submitPerson), So it return that partical function, whereas user don't use this input it would be stay to  like as "hang" visible 
 
 
   }
@@ -64,6 +105,7 @@ const App = () => {
 
   // in input (where use wring filterName) value={filterName}, its mean practically that it  => setFilterName {filterName}  saves all what user writing. 
   // console.log(filterName) prints same things and before user writing anythin to input, so => filterName 
+  // if user typing value forexample  "Christofor", then function => setFilterName saves its value, So filterName = "Christofor"
 
 const handleFilterNameChange  =(event) => {
   console.log(event.target.value)
@@ -71,6 +113,9 @@ const handleFilterNameChange  =(event) => {
 }
 
 
+// in input (where user writing new name) value={newName} that mean practically it saves variable value => setNewName {NewName} all what user typing.
+// console.log(newName) printing same things and even then when user writing anythin to input, so => newName(')
+// for example if user typing value 'Christofor Pavlidi', So then function  => setNewName saves its values so newname = 'Christofor Pavlidi'
 
 const handleNameChange = (event) => {
 
@@ -79,7 +124,7 @@ const handleNameChange = (event) => {
 }
 
 // in input (where user writing new number) value={newnumber}, its means practically that it  => setNewNumber  {newNumber} all what user writing. 
-// console.log(newNumber) tulostaa same things and before then user writing anything to input, so  => newNumber =''
+// console.log(newNumber)  printing same things and before then user writing anything to input, so  => newNumber =''
 // when user writing value forexample "123444", then fuction => setNewNumber saves value, so number = "123444" 
 
 
@@ -100,7 +145,8 @@ const handleNumberChange = (event) => {
   
 
 
- // we initialized variables, which get its place, when adding name to input (FormComponent => props).
+ // we initialized variables, which get its place, when adding name to input (FormComponent => props). 
+
 
 // When user ads new information to under the table, it doing function, which is in belove ( submitperson) ja saves information below "nameobject" variables.
 // The nameobject variables can be as follows (nameObject[0] => {name,phonenumber,date,important, id} => {}
@@ -119,37 +165,17 @@ const handleNumberChange = (event) => {
 
    return (
      <div>
-      <div>
       <h1>Phonebook</h1>
-      <div>
-        filter shown with
-       <input value={filterName}onChange={handleFilterNameChange}placeholder={inputSearchName}/>
-       </div>
-        </div>
+      filter shown with <InputFilterComponent valueProps={filterName}onChangeProps={handleFilterNameChange}placeholderProps={inputSearchName} />
         <h1>Add new information</h1>
-        <form onSubmit={submitPerson}>
-          <div>
-        <input value={newName}onChange={handleNameChange}placeholder={inputTextName}/>
-          </div>
-        <div>
-          <input value={newNumber}onChange={handleNumberChange}placeholder={inputPhoneNumber}/>
-          </div>
-           <button type='submit'>add</button>
-           </form>
+        <InputFormComponent onSubmitProps={submitPerson} nameValue={newName}nameChange={handleNameChange}namePlaceHolder={inputTextName}
+        numberValue={newNumber}numberChange={handleNumberChange}numberPlaceHolder={inputPhoneNumber} typeprops="submit" />
            <h1>Numbers</h1>
-           <div>
-             {persons.filter(filterPerson=> filterPerson.name.toLowerCase().includes(filterName.toLowerCase())).map(filteredPersons  =>
-               <Persons key={filteredPersons.name} personsProps={filteredPersons} />
-             )
-}
-           </div>
-           </div>
+             <PersonsComponent personValue={persons} filterNameValue={filterName} />
+             </div>
+
    )
-}
-
-      
-
-          
+   }
 
 
 export default App
