@@ -1,8 +1,9 @@
 
 
 
-import React, { useState } from 'react'
+import React, {useState, useEffect} from 'react'
 import PersonsComponent from './components/Persons'
+import axios  from 'axios'
 
 
 const InputFilterComponent   = (props) => {
@@ -39,11 +40,27 @@ const InputFormComponent = (props) => {
 }
 
 
+
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: 'Christofor',
-     number: '040-4659788'}
-  ])
+  const [persons, setPersons] = useState([])
+  useEffect(() => {
+  console.log('effect')  // (start of effect and  command => axios.get   start to search data from server.)
+  axios
+  .get('http://localhost:3002/persons')
+  .then(response => {
+    console.log('promifield') ('data is arriving back from server and saves data to inside variables')
+    setPersons(response.data)
+
+  
+    })
+  },[]) 
+
+  console.log('render', persons.length, 'persons') // There is now three a different rows ('render, persons.length, persons) in phonebook
+
+    
+
+
+  
 
   
 
@@ -63,6 +80,10 @@ const App = () => {
   
 
 
+
+  
+
+  
 
 
  
@@ -176,7 +197,7 @@ const handleNumberChange = (event) => {
 
    )
    }
-
+  
 
 export default App
 

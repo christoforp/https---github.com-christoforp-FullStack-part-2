@@ -7,7 +7,8 @@ import React from "react";
 // includes(props.filterNameValue) same thing than  => .includes(filterName)  variables "FilterName" has  initialized in App component 
 // There is no needed to use any other props in that component, because all  other variables coming  "customn"
 // <div key={b.name}> means that all rows what are rendering as result then it is  given unique value (Name)
- 
+
+
 const PersonsComponent = (props) => {
     return(
       <div>
