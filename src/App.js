@@ -1,7 +1,7 @@
 
 
 
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import PersonsComponent from './components/Persons'
 import axios  from 'axios'
 
@@ -44,18 +44,19 @@ const InputFormComponent = (props) => {
 const App = () => {
   const [persons, setPersons] = useState([])
   useEffect(() => {
-  console.log('effect')  // (start of effect and  command => axios.get   start to search data from server.)
-  axios
-  .get('http://localhost:3002/persons')
-  .then(response => {
-    console.log('promifield') ('data is arriving back from server and saves data to inside variables')
-    setPersons(response.data)
+    console.log('effectin aloitus ja komento => axios.get aloittaa datan hakemisen palvelimelta.')
+    axios
+      .get('http://localhost:3000/persons')
+      .then(response => {
+        console.log('promifield')
+        setPersons(response.data)
+      })
+  }, []) 
+  console.log('render', persons.length, 'persons')
 
+  // (start of effect and  command => axios.get   start to search data from server.)
   
-    })
-  },[]) 
-
-  console.log('render', persons.length, 'persons') // There is now three a different rows ('render, persons.length, persons) in phonebook
+  
 
     
 
@@ -114,15 +115,26 @@ const App = () => {
     if(persons.some(personsFind=> personsFind.name === newName)) {
       alert(`${newName}person has been already added on the phonebook. Please use different name!`)
     } else {
-    setPersons(persons.concat(nameObject))
-    setNewName('')     // when user conduct thsi function (submitPerson), So it cleart that partical function, whereas user don't use this input as result it would be stay like as "hang" in visible 
-    setNewNumber('')   // when user  conduct this function (submitPerson), So it clear that partical function, whereas user don't use this input it  would be stay like as "hang" visible 
-    setFilterName('')  // when user conduct  this function (submitPerson), So it return that partical function, whereas user don't use this input it would be stay to  like as "hang" visible 
-
-
+      axios
+      .post('http://localhost:3001/persons', nameObject) // Mikäli käyttäjän lisämää nimeä ei löydy luettelosta, niin lisätään arvot kyseisellä muuttujan arvolla (nameObject) kyseiseen sivuun, joka on .json muodossa.
+      .then(response => {
+        setPersons(persons.concat(response.data)) // Muuttujassa "response" löytyy data mikä on funktion .post() sisällä. Hyödynnetään sitä ja lisätään "setPersons" tilassa olevien muiden puhelintietojen joukkoon. Funktion "concat" avulla me emme muutta komponentin alkuperäistä tilaa, vaan luodaan uusi taulukko!
+        setNewName('') // Kun sivu suorittaa tämän funktion (submitPerson), niin se tyhjentää kyseisen muuttujan taulukon. Mikäli tätä ei olisi, niin se arvo minkä käyttäjä antaa input:iin jäisi ns. "roikkumaan" näkyviin.
+        setNewNumber('') // Kun sivu suorittaa tämän funktion (submitPerson), niin se tyhjentää kyseisen muuttujan taulukon. Mikäli tätä ei olisi, niin se arvo minkä käyttäjä antaa input:iin jäisi ns. "roikkumaan" näkyviin.
+        setFilterName('')
+        
+      })
+    }
   }
+      
+           // when user conduct thsi function (submitPerson), So it cleart that partical function, whereas user don't use this input as result it would be stay like as "hang" in visible 
+           // when user  conduct this function (submitPerson), So it clear that partical function, whereas user don't use this input it  would be stay like as "hang" visible 
+           // when user conduct  this function (submitPerson), So it return that partical function, whereas user don't use this input it would be stay to  like as "hang" visible 
+    
 
-}
+
+
+
 
   // in input (where use wring filterName) value={filterName}, its mean practically that it  => setFilterName {filterName}  saves all what user writing. 
   // console.log(filterName) prints same things and before user writing anythin to input, so => filterName 
