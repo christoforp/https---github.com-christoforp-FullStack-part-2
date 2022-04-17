@@ -5,6 +5,8 @@ import React, { useState, useEffect } from 'react'
 import PersonsComponent from './components/Persons'
 import axios  from 'axios'
 
+import notesService from './services/notes'
+
 
 const InputFilterComponent   = (props) => {
   return(
@@ -43,16 +45,23 @@ const InputFormComponent = (props) => {
 
 const App = () => {
   const [persons, setPersons] = useState([])
-  useEffect(() => {
-    console.log('effectin aloitus ja komento => axios.get aloittaa datan hakemisen palvelimelta.')
-    axios
-      .get('http://localhost:3000/persons')
-      .then(response => {
-        console.log('promifield')
-        setPersons(response.data)
-      })
-  }, []) 
-  console.log('render', persons.length, 'persons')
+
+  useEffect(() => {   // we are using  "notesService" modules contest, where is find variables => "const getAllValues" = () => ""
+                    
+    notesService
+    .getAllValues()  // which means that for first we are current variables fuctions, which return back to data ()
+    .then(showResults => {  // variables "showResults" can be also "Christofor" so then(Christofor => ...)
+     setPersons(showResults)  // after this we are changing tables "Persons" stable using setPersons function, which uses values of variables "showResults"
+    })
+  }, [])
+
+  console.log('render', persons.length, 'persons') // There is now three a different rows ('render, persons.length, persons) in phonebook
+
+
+
+
+
+
 
   // (start of effect and  command => axios.get   start to search data from server.)
   
@@ -114,18 +123,21 @@ const App = () => {
 
     if(persons.some(personsFind=> personsFind.name === newName)) {
       alert(`${newName}person has been already added on the phonebook. Please use different name!`)
-    } else {
-      axios
-      .post('http://localhost:3001/persons', nameObject) // Mikäli käyttäjän lisämää nimeä ei löydy luettelosta, niin lisätään arvot kyseisellä muuttujan arvolla (nameObject) kyseiseen sivuun, joka on .json muodossa.
-      .then(response => {
-        setPersons(persons.concat(response.data)) // Muuttujassa "response" löytyy data mikä on funktion .post() sisällä. Hyödynnetään sitä ja lisätään "setPersons" tilassa olevien muiden puhelintietojen joukkoon. Funktion "concat" avulla me emme muutta komponentin alkuperäistä tilaa, vaan luodaan uusi taulukko!
-        setNewName('') // Kun sivu suorittaa tämän funktion (submitPerson), niin se tyhjentää kyseisen muuttujan taulukon. Mikäli tätä ei olisi, niin se arvo minkä käyttäjä antaa input:iin jäisi ns. "roikkumaan" näkyviin.
-        setNewNumber('') // Kun sivu suorittaa tämän funktion (submitPerson), niin se tyhjentää kyseisen muuttujan taulukon. Mikäli tätä ei olisi, niin se arvo minkä käyttäjä antaa input:iin jäisi ns. "roikkumaan" näkyviin.
+    } else { 
+      notesService       // we are using "notesServices" modules content, which contain variables => "const createValue" newValue => 
+      .createValue(nameObject)  // we updating tables using to variables "NameObject" values. We find values => name,number,date,id and important.
+                              
+      .then(newValue => { 
+        setPersons(persons.concat(newValue))     //  We changes variables "persons" stable to use "setPersons" function and with function "concat"  we are not changes components stable, but we crearing newTable 
+                          
+        // whereas adding name by user is not found in table, then adding value for in that variables value (nameObject), which is in Json mode                      // There is found data, which name is function .post() in variables "response". That is utilzied and adding "setPersons"  to with among others  phoneinformation. We do not use function 'concat' to change components orginal stable , but we create a new table.
+        setNewName('') 
+        setNewNumber('')
         setFilterName('')
-        
       })
     }
   }
+      
       
            // when user conduct thsi function (submitPerson), So it cleart that partical function, whereas user don't use this input as result it would be stay like as "hang" in visible 
            // when user  conduct this function (submitPerson), So it clear that partical function, whereas user don't use this input it  would be stay like as "hang" visible 
