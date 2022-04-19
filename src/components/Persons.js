@@ -13,8 +13,9 @@ const PersonsComponent = (props) => {
     return(
       <div>
         {props.personValue.filter(a => a.name.toLowerCase().includes(props.filterNameValue.toLowerCase())).map(b =>
-          <div key={b.name}>Name: {b.name}, {b.phonenumber} (phone number)</div>
+          <div key={b.name}>Name: {b.name}, {b.number} (phone number) <button  value={b.id} onClick={props.deleteValue}>delete</button></div>  // {b.name}+ {b.number} + {b.id} seeking values from variable "persons" and shows "name", "phoneNumber", "number" and "id" values to user. 
         )}
+      
       </div>
     )
   }

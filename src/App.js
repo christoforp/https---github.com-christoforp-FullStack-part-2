@@ -1,11 +1,12 @@
 
 
 
+
 import React, { useState, useEffect } from 'react'
 import PersonsComponent from './components/Persons'
 import axios  from 'axios'
 
-import notesService from './services/notes'
+import notesService from './services/notesService.js'
 
 
 const InputFilterComponent   = (props) => {
@@ -51,11 +52,12 @@ const App = () => {
     notesService
     .getAllValues()  // which means that for first we are current variables fuctions, which return back to data ()
     .then(showResults => {  // variables "showResults" can be also "Christofor" so then(Christofor => ...)
-     setPersons(showResults)  // after this we are changing tables "Persons" stable using setPersons function, which uses values of variables "showResults"
+     setPersons(showResults)
+     console.log(showResults)  // after this we are changing tables "Persons" stable using setPersons function, which uses values of variables "showResults"
     })
   }, [])
 
-  console.log('render', persons.length, 'persons') // There is now three a different rows ('render, persons.length, persons) in phonebook
+   // There is now three a different rows ('render, persons.length, persons) in phonebook
 
 
 
@@ -130,7 +132,8 @@ const App = () => {
       .then(newValue => { 
         setPersons(persons.concat(newValue))     //  We changes variables "persons" stable to use "setPersons" function and with function "concat"  we are not changes components stable, but we crearing newTable 
                           
-        // whereas adding name by user is not found in table, then adding value for in that variables value (nameObject), which is in Json mode                      // There is found data, which name is function .post() in variables "response". That is utilzied and adding "setPersons"  to with among others  phoneinformation. We do not use function 'concat' to change components orginal stable , but we create a new table.
+                                                 // whereas adding name by user is not found in table, then adding value for in that variables value (nameObject), which is in Json mode                      // There is found data, which name is function .post() in variables "response". That is utilzied and adding "setPersons"  to with among others  phoneinformation. We do not use function 'concat' to change components orginal stable , but we create a new table.
+                                                 
         setNewName('') 
         setNewNumber('')
         setFilterName('')
@@ -178,12 +181,31 @@ const handleNumberChange = (event) => {
   setNewNumber(event.target.value)
 
 }
+// We initalized variables "handledeleteName", using for this function that we can get delete button all names of phonebook 
+// this button get values that rows tables id, forexample if "persons" variables values is First as result that rows button get same value. 
+// This button functionality is implemented components => personsComponent belov from components/Persons.js => (<button value={b.id} onclick={props.deleteValue}>delete</button>})
+// button can be  as follows  => <button value="1">delete</button> 
+const handleDeleteName = (event) => {
+  const button = parseInt(event.target.value)  // We initalize variables button for this we are using "parseInt() function that we can get  rid off  => "..." so  after function  "1" = 1
+  const getName =  button-1    // We initalize variables getName and calculating  its value using "button" variables  value -1 and  we get answer. 
+
+
+
+// When user want to delete users information in table as result windows alert 'are you sure that you wanna leave' if user make sure that he want to delete, so then have to use belove function  
+if(window.confirm(`Are you sure that you wanna leave ${persons[getName].name} from records?`)) {
+  notesService // We are using content of variables, where is find  variables => const delete  = "deleteValue" 
+  .deleteValue() // We conduct  deleteValue() function,  so function value can be => .deleteValue(1), for that reason, we have been used parseInt() function, because buttos initial value  => value="1" isn't same thing than just 1. 
+  .then(updateList => {  // When information has deleted from baseUrl, then we changes "persons" variables stable. 
+    setPersons(persons.filter(newList => newList.id !==button)) // We are using "filter() function "", which creates new table (creates  a new array). if  "persons" id= false with variables "buttonID", Then its filtering a current table and replaced to new table, if person ID withstands with variables "buttonId", then it not be changed. 
+  })
+}
+}
+
+
 
 
 
   
-
-
 
 
 
@@ -216,11 +238,15 @@ const handleNumberChange = (event) => {
         <InputFormComponent onSubmitProps={submitPerson} nameValue={newName}nameChange={handleNameChange}namePlaceHolder={inputTextName}
         numberValue={newNumber}numberChange={handleNumberChange}numberPlaceHolder={inputPhoneNumber} typeprops="submit" />
            <h1>Numbers</h1>
-             <PersonsComponent personValue={persons} filterNameValue={filterName} />
-             </div>
+             <PersonsComponent personValue={persons} filterNameValue={filterName}  deleteValue={handleDeleteName} />
+
+          </div> 
+             
+               
 
    )
    }
+  
   
 
 export default App
