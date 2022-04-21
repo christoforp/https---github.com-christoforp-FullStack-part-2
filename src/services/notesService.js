@@ -17,6 +17,18 @@ const createValue = async (newValue) => {
     return response.data; // When fucntion has conducted, so the current data is saved under the return responde.data", that we can use that variables data in side.
 }
 
+// We initalize variables "createValue", which purpose is to work, when user wanto to delete information from baseUrl, then it will leaves according to id: forever. 
+// When user want to update infromation from baseUrl, then site conduct that function =>  "updateValue()"
+
+const updateValue = async (id,changeValue) => {
+    const request = axios.put(`${baseUrl}/${id}`, changeValue)
+    return request.then(response => {
+        return response.data
+    })
+     // When function has conducted, so te current data is saved under the return response.data", that we can use that variables data in side, if this would ne be used then it would be error.
+
+}
+
 // We initialize variables "deleteValue", which purposet is to work when user want to delete information from baseUrl, which leaves with ID forever. 
 // There is also a good to mention that buttons "value" determine {id} for example is button value="2" as result this remove user information from  baseUrl => "http://localhost:3000/persons/2" forever. 
 // When user want to delete information from baseUrl, as result side conduct always that function => "deleteValue(...)"
@@ -27,4 +39,6 @@ const deleteValue = async (id) => { // We initalize also "id" variables use insi
 }
 
 // The current variables "export", if this would not be used  then it would be error.
-export default {getAllValues, createValue, deleteValue}
+export default {getAllValues, createValue,  updateValue, deleteValue}
+
+

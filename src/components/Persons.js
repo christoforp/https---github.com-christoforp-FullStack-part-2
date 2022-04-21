@@ -2,6 +2,7 @@ import React from "react";
 
 
 
+
 // creating component named by  "Persons component". return() returning  value in below, which includes BACK TO App component.
 // props.personValue.filter is same thing than => Persons.filter(...)  variables "Persons"  has  initialized in App component. 
 // includes(props.filterNameValue) same thing than  => .includes(filterName)  variables "FilterName" has  initialized in App component 
