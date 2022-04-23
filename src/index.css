@@ -1,13 +1,13 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;1,100&family=Roboto+Mono:wght@100&display=swap');
+.error {
+  color: #435b5d;
+  background: #70dcb1;
+  font-size: 20px;
+  font-family: 'Josefin Sans';
+  text-align: center;
+  border-style: solid;
+  border-radius: 5px;
+  border-color: #244344;
+  padding: 10px;
+  margin-bottom: 10px;
 }

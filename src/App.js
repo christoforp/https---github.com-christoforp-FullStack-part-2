@@ -43,10 +43,27 @@ const InputFormComponent = (props) => {
   )
 }
 
+// We are creating component "Notification", where we adding  one (1) variable => "message" using to inside that component.
+// There is seen <Notification message={statusMessage} /> as we see this variables is equal with x component.
+// if there would not be  put this variables => const "Notfication "  = ()  => {}, then that component will not work. 
+//  
+const Notification = ({ message }) => {  // If variables "message" => {statusMessage} is false with "null", then nothing is not rendered to user. 
+  if(message === null) { // if variables "message" => {statusMessage} is  same value with "null", then nothing will not render to user.
+  return null // 
+}
+ // if variables "message" => {statusMessage} is true with null, then we render that value
+return(
+  <div className='error'>{message}</div>
+)
+}
+
+
 
 
 const App = () => {
   const [persons, setPersons] = useState([])
+  const [statusMessage, setStatusMessage] = useState(null) // We initalized variables "statusMessage" stable to, which get values = "null", if we want change that value, then we using function   => setStatusMessage
+
 
   useEffect(() => {   // we are using  "notesService" modules contest, where is find variables => "const getAllValues" = () => ""           
     notesService
@@ -57,7 +74,6 @@ const App = () => {
     })
   }, [])
 
-   // There is now three a different rows ('render, persons.length, persons) in phonebook
 
 
 
@@ -74,7 +90,7 @@ const App = () => {
 
   
 
-  
+
 
   
 
@@ -145,7 +161,17 @@ const App = () => {
         setNewNumber('')       // Whereas user agree "Window.confirm"(alarm), then it changes "newnumber" variables to orginal stable, sot it clear that variables value. 
 
       })
+        setStatusMessage(` You have updated'${nameObject.name}'on the phonebook! `) // We changes "statusmessage" value to that text. There is also good to take mention that value is same than {message} <=> inside with  "Notification"  variables.
+        // We are using "SetTimeout(()" function that we can get to delete that notification with somekind of time, forexample  that notification will leave till after 5s(5000 ms)
+
+
+        setTimeout(() => {
+          setStatusMessage(null)
+        },5000)
+
+      
     }
+
 
 
 
@@ -158,16 +184,29 @@ const App = () => {
     setNewName('')
     setNewNumber('') 
     })
+
+
+    // We changing "statusMessages" values to that text. There is also good to know that this "statusMessage" is same value than {message} <=>  inside with "Notification" variables
+    setStatusMessage(`you have added'${nameObject.name}' to the phonebook!`)
+    setTimeout(() => {  // We are using "SetTimeout(()"" function that we can get delete  notification some kind of time, for example now notification leaves after 5s beacause we have been used },(5000) => so (5000ms)
+      setStatusMessage(null)  // We are changing "statusMessage" to variables values => "null", but there have to still remember that value is same as "message" <=>   inside with components of "notification" variables.
+      
+    }, 5000)
+  }
+}
+
+  
+  
                                  // We updating  table to using varibles "nameObject" values = [name,number,date,id and important]
                                     // When "createValue()"" function have been conducted, then it saves temporarily data variables  under "nameObject", so if we would be using console.log(newValue) => .then(..) inside, then we will get printed values by users to visible in console.                                  // We changes  variables "persons stable, to using setPersons() function, We are using persons.concat(...) not to  change komponents stable, but creating a new table.
     // When createValue function has conducted, then it saves users values temporarily to under "newValue", so if we would be using to "console.log(newValue)" function .then(...), inside, then we would get given values by users visible in printed to console.
       // when user conduct thsi function (submitPerson), So it cleart that partical function, whereas user don't use this input as result it would be stay like as "hang" in visible 
    // when user  conduct this function (submitPerson), So it clear that partical function, whereas user don't use this input it  would be stay like as "hang" visible 
     // when user conduct  this function (submitPerson), So it return that partical function, whereas user don't use this input it would be stay to  like as "hang" visible 
-  }
+  
     
   // we are using "notesServices" modules content, which contain variables => "const createValue" newValue => 
-      }
+      
     
   
           
@@ -226,6 +265,15 @@ if(window.confirm(`Are you sure that you wanna leave ${persons[Index].name} from
   .then(updatedList => {  // When information has deleted from baseUrl, then we changes "persons" variables stable. 
     setPersons(persons.filter(newlist => newlist.id !==button)) // We are using "filter() function "", which creates new table (creates  a new array). if  "persons" id= false with variables "buttonID", Then its filtering a current table and replaced to new table, if person ID withstands with variables "buttonId", then it not be changed. 
   })
+
+  // We are changing "statusMessage" variables to that text. There is also good to know that "statusMessage" variables is same as {message} <=> inside with "Notification" variables.
+  // We are using "setTimeout(() function to that we can delete notification some kind of time, for example now notification leaves after 5s because we have been used }, 5000) so (5000ms)
+  setStatusMessage( `you have already deleted'${persons[Index].name}'from the phonebook records`)
+  setTimeout(() => {   
+    setStatusMessage(null) // We are changing "statusMessage" to variables values => "null", but there have to still remember that value is same as {message} <=>  inside with  components of "notification"  variables 
+    
+  }, 5000);
+  
 }
 }
 
@@ -265,6 +313,7 @@ if(window.confirm(`Are you sure that you wanna leave ${persons[Index].name} from
    return (
      <div>
       <h1>Phonebook</h1>
+      <Notification message={statusMessage} />
       filter shown with <InputFilterComponent valueProps={filterName}onChangeProps={handleFilterNameChange}placeholderProps={inputSearchName} />
         <h1>Add new information</h1>
         <InputFormComponent onSubmitProps={submitPerson} nameValue={newName}nameChange={handleNameChange}namePlaceHolder={inputTextName}
