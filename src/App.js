@@ -22,6 +22,7 @@ const InputFilterComponent   = (props) => {
 }
 
 
+
 const InputFormComponent = (props) => {
   return(
     <form onSubmit={props.onSubmitProps}>
