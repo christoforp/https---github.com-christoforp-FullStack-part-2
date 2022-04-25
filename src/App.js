@@ -44,26 +44,50 @@ const InputFormComponent = (props) => {
 }
 
 // We are creating component "Notification", where we adding  one (1) variable => "message" using to inside that component.
-// There is seen <Notification message={statusMessage} /> as we see this variables is equal with x component.
+// There is seen <Notification message={errormessage} /> as we see this variables is equal with x component.
 // if there would not be  put this variables => const "Notfication "  = ()  => {}, then that component will not work. 
 //  
-const Notification = ({ message }) => {  // If variables "message" => {statusMessage} is false with "null", then nothing is not rendered to user. 
-  if(message === null) { // if variables "message" => {statusMessage} is  same value with "null", then nothing will not render to user.
+const Notification = ({ message, checkError}) => {  // If variables "message" => {errormessage} is false with "null", then nothing is not rendered to user. 
+  if(message   === null) { // if variables "message" => {errormessage } is  same value with "null", then nothing will not render to user.
   return null // 
 }
- // if variables "message" => {statusMessage} is true with null, then we render that value
+
+ // if variables "message" => {errrormessage } is false  with value "null", and variables "checkError" => {error} is same as  "false", then we render that value
+
+if( message != null & checkError === false) {
+
+ return(
+  <div className='error'>{message}</div>  // div element have been used because  this "error", which is found also  => "index.css"
+
+ )
+}
+
+
+ 
+// if variables "message" => {errrormessage} is true with "null", and variables "checkError" => {error} is same as "true"
+else if (message != null & checkError === true) {  
 return(
-  <div className='error'>{message}</div>
+  <div className='success'>{message}</div> // div element is used because this "success" is found also  > index.css file.
+
 )
 }
+}
+
+
+
+
+
+
+
+
 
 
 
 
 const App = () => {
   const [persons, setPersons] = useState([])
-  const [statusMessage, setStatusMessage] = useState(null) // We initalized variables "statusMessage" stable to, which get values = "null", if we want change that value, then we using function   => setStatusMessage
-
+  const [errorMessage, setErrorMessage] = useState(null) // We initalized variables "errorMessage" stable to, which get values = "null", if we want change that value, then we using function   => setErrorMessage
+  const [error, setError] = useState(true) // We initialize "error" stable, which get value "true" and if we want to change stables value, then we use function => setError 
 
   useEffect(() => {   // we are using  "notesService" modules contest, where is find variables => "const getAllValues" = () => ""           
     notesService
@@ -159,17 +183,25 @@ const App = () => {
         setFilterName('')           // Whereas user agree "window.confirm"(alarm), then it changes "filterName" variables to original stable so it clear that variables value.
         setNewName('')        // Whereas user agree "window.confirm"(alarm), then it changes "newName" variables to original stable, so it clear that variables value. 
         setNewNumber('')       // Whereas user agree "Window.confirm"(alarm), then it changes "newnumber" variables to orginal stable, sot it clear that variables value. 
+        setError(true)   // We are changing "error" to variables values => "true", but this is not mandatory, because of if persons updating fails, then it changes same value => "false" and after that to => "true". This is used that we can make sure that persons updating  with render will happen correctly for user. 
+        setErrorMessage(` you have updated '${nameObject.name}' succesfully  on the phonebook! `)
+        setTimeout(() => { 
+          setErrorMessage(null)  // We are changing "errormessage " variables values => "null" remember that variables is equal as {message} <=>  inside with "nptification" component 
+          
+        }, 5000);
+      })
+      .catch(error => {
+        setError(false)
+        setErrorMessage(` You have updated'${nameObject.name}' unsuccesfully on the phonebook. Please try again!:) `) // We changes "statusmessage" value to that text. There is also good to take mention that value is same than {message} <=> inside with  "Notification"  variables.
+        // We are using "SetTimeout(()" function that we can get to delete that notification with somekind of time, for example  that notification will leave till after 5s(5000 ms)
+        setPersons(persons.filter(searchValue => searchValue.name ==! nameObject.name))
+        setError(true) // We are changing "error" to variables values => "true", but this is not mandatory, because of if persons updating fails, then it changes same value => "false" and after that to => "true". This is used that we can make sure that persons updating  with render will happen correctly for user
+        setTimeout(() => {
+          setErrorMessage(null)   // We are changing "errormessage " variables values => "null" remember that variables is equal as {message} <=>  inside with "nptification" component 
+          
+        },6000)
 
       })
-        setStatusMessage(` You have updated'${nameObject.name}'on the phonebook! `) // We changes "statusmessage" value to that text. There is also good to take mention that value is same than {message} <=> inside with  "Notification"  variables.
-        // We are using "SetTimeout(()" function that we can get to delete that notification with somekind of time, forexample  that notification will leave till after 5s(5000 ms)
-
-
-        setTimeout(() => {
-          setStatusMessage(null)
-        },5000)
-
-      
     }
 
 
@@ -183,16 +215,28 @@ const App = () => {
     setFilterName('')
     setNewName('')
     setNewNumber('') 
+    setError(true) // We are changing "error" to variables values => "true", but this is not mandatory, because of if persons updating fails, then it changes same value => "false" and after that to => "true". This is used that we can make sure that persons updating  with render will happen correctly for user
+    setErrorMessage(`you have added'${nameObject.name}' succesfully  on the phonebook!`)
+    setTimeout(() => {
+      setErrorMessage(null)  // We are changing "errormessage " variables values => "null" remember that variables is equal as {message} <=>  inside with "nptification" component 
+          
+      
+    }, 5000);
     })
 
-
+.catch(error => {   // Whereas is coming error, When trying to add new names to phonebook, then program conduct things and render those for visible to user. 
+  setError(false) // We are changing "error" variables values => "false". There is also good to know that value is same as {checkError} <=> inside with "notification" component 
     // We changing "statusMessages" values to that text. There is also good to know that this "statusMessage" is same value than {message} <=>  inside with "Notification" variables
-    setStatusMessage(`you have added'${nameObject.name}' to the phonebook!`)
+    setErrorMessage(`adding   '${nameObject.name}'  was unsuccesfull on the phonebook. Please Try again!:)`)
     setTimeout(() => {  // We are using "SetTimeout(()"" function that we can get delete  notification some kind of time, for example now notification leaves after 5s beacause we have been used },(5000) => so (5000ms)
-      setStatusMessage(null)  // We are changing "statusMessage" to variables values => "null", but there have to still remember that value is same as "message" <=>   inside with components of "notification" variables.
+      setError(true)
+      setErrorMessage(null)  // We are changing "errormessage" to variables values => "null", but there have to still remember that value is same as "message" <=>   inside with components of "notification" variables.
       
-    }, 5000)
+    }, 6000)
+})
+  
   }
+
 }
 
   
@@ -252,31 +296,48 @@ const handleNumberChange = (event) => {
 // this button get values that rows tables id, forexample if "persons" variables values is First as result that rows button get same value. 
 // This button functionality is implemented components => personsComponent belov from components/Persons.js => (<button value={b.id} onclick={props.deleteValue}>delete</button>})
 // button can be  as follows  => <button value="1">delete</button> 
-const handleDeleteName = (event) => {
-  const button = parseInt(event.target.value)  // We initalize variables button for this we are using "parseInt() function that we can get  rid off  => "..." so  after function  "1" = 1
-  const Index =  button-1    // We initalize variables getName and calculating  its value using "button" variables  value -1 and  we get answer. 
+const handleDeleteName = (event)  => {
+  const person = parseInt(event.target.value) // We initalize variables button for this we are using "parseInt() function that we can get  rid off  => "..." so  after function  "1" = 1
+  const result =  person -1    // We initalize variables getName and calculating  its value using "button" variables  value -1 and  we get answer. 
 
 
 
 // When user want to delete users information in table as result windows alert 'are you sure that you wanna leave' if user make sure that he want to delete, so then have to use belove function  
-if(window.confirm(`Are you sure that you wanna leave ${persons[Index].name} from records?`)) {
+if(window.confirm(`Are you sure that you wanna leave ${persons[result].name} from records?`)) {
   notesService // We are using content of variables, where is find  variables => const delete  = "deleteValue" 
   .deleteValue(event.target.value) // We conduct  deleteValue() function,  so function value can be => .deleteValue(1), for that reason, we have been used parseInt() function, because buttos initial value  => value="1" isn't same thing than just 1. 
   .then(updatedList => {  // When information has deleted from baseUrl, then we changes "persons" variables stable. 
-    setPersons(persons.filter(newlist => newlist.id !==button)) // We are using "filter() function "", which creates new table (creates  a new array). if  "persons" id= false with variables "buttonID", Then its filtering a current table and replaced to new table, if person ID withstands with variables "buttonId", then it not be changed. 
+    setPersons(persons.filter(newlist  => newlist.id !==  person )) // We are using "filter() function "", which creates new table (creates  a new array). if  "persons" id= false with variables "buttonID", Then its filtering a current table and replaced to new table, if person ID withstands with variables "button", then it not be changed.  
+    setError(true) // We are changing "error" to variables values => "true", but this is not mandatory, because of if persons deleting fails, then it changes same value to => "false" and after that to => "true". We are using this method that we can make sure it updating  persons  with render correctly for user.
+    setErrorMessage(`you have deleted'${persons[result].Name}'succcesfully from the phonebook!`)      // We changing "errormessage" values to that text. There is also good to know that this "errormessage" is same value than {message} <=>  inside with "Notification" variables
+
+    setTimeout(() => {     // We are using "setTimeout(() function to that we can delete notification some kind of time, for example now notification leaves after 5s because we have been used }, 5000) so (5000ms)
+    setErrorMessage(null)  // We are changing  setErroMessage() variables values ("null"), but we have still remember that variables value is equal as {message} <=> inside with "notification" variables.
+    },5000);
+  
+  
   })
 
-  // We are changing "statusMessage" variables to that text. There is also good to know that "statusMessage" variables is same as {message} <=> inside with "Notification" variables.
-  // We are using "setTimeout(() function to that we can delete notification some kind of time, for example now notification leaves after 5s because we have been used }, 5000) so (5000ms)
-  setStatusMessage( `you have already deleted'${persons[Index].name}'from the phonebook records`)
-  setTimeout(() => {   
-    setStatusMessage(null) // We are changing "statusMessage" to variables values => "null", but there have to still remember that value is same as {message} <=>  inside with  components of "notification"  variables 
-    
-  }, 5000);
   
+  .catch(error => {  // Whereas coming mistakes, when we are trying to delete persons from phonebook, then program conduct () those things, which are inside that and render that to visible for user. 
+    setError(false)    // We are changing "error" variables values => "false". There is also good to know that value is same as {checkError} <=> inside with "notification" component
+  setErrorMessage( `Deleting'${persons[result].name}' was unsuccesfull from the phonebook records. Please try Again!:) `)
+  
+    setTimeout(() => {     // We are using "setTimeout(()" function that we can delete notification message some kind of way, for example now message of notification will leave after 6s, because We have been used => setTimeout(() },6000); so (6000ms)
+
+      setError(true)        // We are changing "error" to variables values => "true", but this is not mandatory, because of if persons deleting fails, then it changes same value to => "false" and after that to => "true". We are using this method that we can make sure it updating  persons  with render correctly for user.  
+      setErrorMessage(null)      // We are changing "error" to variables values => "null", but there have to still remember that value is same as {message} <=>  inside with  components of "notification"  variables 
+
+    }, 6000);
+  })
 }
 }
+     
+  
 
+
+
+  
 
 
   
@@ -287,7 +348,7 @@ if(window.confirm(`Are you sure that you wanna leave ${persons[Index].name} from
 
   
 
-
+  
 
   
 
@@ -313,7 +374,7 @@ if(window.confirm(`Are you sure that you wanna leave ${persons[Index].name} from
    return (
      <div>
       <h1>Phonebook</h1>
-      <Notification message={statusMessage} />
+      <Notification message={errorMessage} checkError={error}/>
       filter shown with <InputFilterComponent valueProps={filterName}onChangeProps={handleFilterNameChange}placeholderProps={inputSearchName} />
         <h1>Add new information</h1>
         <InputFormComponent onSubmitProps={submitPerson} nameValue={newName}nameChange={handleNameChange}namePlaceHolder={inputTextName}
@@ -326,11 +387,14 @@ if(window.confirm(`Are you sure that you wanna leave ${persons[Index].name} from
    
                
 
+   
+  
    )
    }
   
+   
   
-
+  
 export default App
 
 

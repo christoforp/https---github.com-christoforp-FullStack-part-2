@@ -21,6 +21,7 @@ const createValue = async (newValue) => {
     return request.then(response => {
         return response.data 
     })
+    
 
      // When fucntion has conducted, so the current data is saved under the return responde.data", that we can use that variables data in side.
 }
