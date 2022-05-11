@@ -1,9 +1,9 @@
 
 import axios  from "axios";
 
-const baseUrl= 'http://localhost:3000/persons'  // That purpose is initalize variables  "baseUrl", which use db.json values, which is located in that side.
+const baseUrl= 'api/persons' // That purpose is initalize variables  "baseUrl", which use db.json values, which is located in that side.
 // We initialize variables "getAllValues", which purpose is to  take values from inside baseUrl and with return response.data to return that visible for user. 
-// When user open this first time as result for site is rendered information from baseUrl with this variables. 
+// When user open this first time as result for site is rendered information from baseUrl with this variables.
 const getAllValues =  async () => { 
     const request = axios.get(baseUrl)
     return request.then(response => {

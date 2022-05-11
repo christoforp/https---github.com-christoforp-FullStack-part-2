@@ -7,20 +7,19 @@
     "@testing-library/react": "^12.1.4",
     "@testing-library/user-event": "^13.5.0",
     "axios": "^0.26.1",
+    "mongodb": "^4.5.0",
+    "mongoose": "^6.3.1",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-scripts": "5.0.0",
     "web-vitals": "^2.1.4"
   },
-
   "scripts": {
-    "server": "json-server -p3000/persons --watch db.json",
+    "server": "json-server -p3001/--watch db.json",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject" 
-    
-    
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
@@ -42,5 +41,10 @@
   },
   "devDependencies": {
     "json-server": "^0.17.0"
-  }
+  },
+
+      "resolutions": {
+        "mini-css-extract-plugin": "2.4.5"
+      
+      }
 }
