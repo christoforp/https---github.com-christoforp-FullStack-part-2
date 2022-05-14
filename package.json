@@ -15,12 +15,18 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "server": "json-server -p3001/--watch db.json",
+    "server": "json-server -p3000/--watch db.json",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
+    "eject": "react-scripts eject",
+    "build:ui": "rm -rf build  && cd ../phonebook2/ && npm run build && cp -r build ../backend",
+    "deploy": "git push heroku master",
+    "deploy:full": "npm run build:ui && git add . && git commit -m uibuild &&  git push &&  npm run deploy",
+    "logs:prod": "heroku logs --tail"
+
+
+},
   "eslintConfig": {
     "extends": [
       "react-app",
@@ -45,6 +51,9 @@
 
       "resolutions": {
         "mini-css-extract-plugin": "2.4.5"
+
+      },
+
+      "proxy": "http://localhost:3001"
       
       }
-}
